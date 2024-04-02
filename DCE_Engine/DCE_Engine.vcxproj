@@ -142,8 +142,11 @@
   <ItemGroup>
     <ClInclude Include="entity.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="leadership_morale.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="psychological_profile.h" />
     <ClInclude Include="structs.h" />
+    <ClInclude Include="weapon_skill.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />

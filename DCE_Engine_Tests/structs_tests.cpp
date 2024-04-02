@@ -2,6 +2,9 @@
 #include "CppUnitTest.h"
 #include "../DCE_Engine/structs.h"
 #include "../DCE_Engine/entity.h"
+#include "../DCE_Engine/psychological_profile.h"
+#include "../DCE_Engine/weapon_skill.h"
+#include "../DCE_Engine/leadership_morale.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -42,6 +45,33 @@ namespace DCEEngineTests
 			EntityGraph eg{ value, &e };
 
 			Assert::IsNotNull(&e);
+		}
+
+		TEST_METHOD(PsychologicalProfile_Construct_Success)
+		{
+			PsychologicalProfile profile(0.5f, 0.7f, 0.3f);
+			Assert::AreEqual(0.5f, profile.currentStress);
+			Assert::AreEqual(0.7f, profile.stressTolerance);
+			Assert::AreEqual(0.3f, profile.stressRecoveryRate);
+		}
+
+		TEST_METHOD(WeaponSkill_Construct_Success)
+		{
+			WeaponSkill skill(0.8f, 10.0f, 20.0f, 0.6f);
+			Assert::AreEqual(0.8f, skill.accuracy);
+			Assert::AreEqual(10.0f, skill.minimumDamage);
+			Assert::AreEqual(20.0f, skill.maximumDamage);
+			Assert::AreEqual(0.6f, skill.currentSkill);
+		}
+
+		TEST_METHOD(LeadershipMorale_Construct_Success)
+		{
+			LeadershipMorale morale(-0.5f, 0.7f, 0.8f, 0.3f, 0.9f);
+			Assert::AreEqual(-0.5f, morale.currentOpinion);
+			Assert::AreEqual(0.7f, morale.decisiveness);
+			Assert::AreEqual(0.8f, morale.decisionMaking);
+			Assert::AreEqual(0.3f, morale.hesitation);
+			Assert::AreEqual(0.9f, morale.offense);
 		}
 	};
 }

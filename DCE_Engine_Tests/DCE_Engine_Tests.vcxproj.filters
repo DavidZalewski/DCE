@@ -27,7 +27,7 @@
     <ClCompile Include="cereal_json_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="nlohmann_json_tests_model_B.cpp">
+    <ClCompile Include="structs_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -8,6 +8,7 @@
 #include "leadership_morale.h"
 #include "weapon_skill.h"
 #include "psychological_profile.h"
+#include <functional>
 
 enum EntityType { BRIDGE, TOWN, ROAD_JUNCTION };
 enum Faction { RED, BLUE, CIV, NONE };
@@ -179,4 +180,81 @@ public:
     std::vector<Unit*> getAllUnitsExceptLeader() override; // list of pointers to map
     std::vector<std::string> getAllRoles() override; // get_keys equivalent
     std::vector<Buddy*> getAllBuddies() override; // get all buddies
+};
+
+enum class OrderType { MOVE, ATTACK, DEFEND, PATROL };
+enum class OrderStatus { INCOMPLETE, ENROUTE, FAILED, COMPLETED };
+
+class Order {
+public:
+    using Condition = std::function<bool()>;
+
+    Order(Condition condition, OrderType orderType, Location location, Order* previousOrder, Order* nextOrder, Unit* unit)
+        : condition(condition), orderType(orderType), location(location), previousOrder(previousOrder), nextOrder(nextOrder), unit(unit), status(OrderStatus::INCOMPLETE) {}
+
+    Condition condition;
+    OrderType orderType;
+    Location location;
+    Order* previousOrder;
+    Order* nextOrder;
+    Unit* unit;
+    OrderStatus status;
+};
+
+class CombatEvent {
+public:
+    virtual ~CombatEvent() {}
+    long getId() const { return id; }
+    const std::string& getDescription() const { return description; }
+    const Location& getLocation() const { return location; }
+protected:
+    CombatEvent(long id, const std::string& description, const Location& location)
+        : id(id), description(description), location(location) {}
+private:
+    long id;
+    std::string description;
+    Location location;
+};
+
+class MockCombatEvent : public CombatEvent {
+public:
+    MockCombatEvent(long id, const Location& location)
+        : CombatEvent(id, "Mock Combat Event", location) {}
+};
+
+class IFrame {
+public:
+    virtual ~IFrame() {}
+    virtual void apply(CombatEvent& event) = 0;
+};
+
+class CombatFrame : public IFrame {
+public:
+    void apply(CombatEvent& event) override {
+        // Apply changes to the combat event
+    }
+};
+
+class SquadFrame : public IFrame {
+public:
+    void apply(CombatEvent& event) override {
+        // Apply changes to the combat event
+    }
+};
+
+class PlatoonFrame : public IFrame {
+public:
+    void apply(CombatEvent& event) override {
+        // Apply changes to the combat event
+    }
+};
+
+class MockCombatFrame : public CombatFrame {
+public:
+    bool WAS_CALLED = false;
+    // Override virtual methods to provide mock implementation
+    void apply(CombatEvent& event) override {
+        // Apply changes to the combat event
+        WAS_CALLED = true;
+    }
 };

@@ -237,5 +237,34 @@ namespace DCEEngineTests
 
 			Assert::IsNotNull(&company);
 		}
+
+		TEST_METHOD(Order_Construct_Success) {
+			std::function<bool()> lambda = [] { return true; };
+			Order::Condition condition = lambda;
+			OrderType orderType = OrderType::MOVE;
+			Location location = { 40.323233, -70.113040 }; // Assuming Location has a default constructor
+			Order* previousOrder = nullptr;
+			Order* nextOrder = nullptr;
+			Unit* unit = nullptr; // Assuming Unit has a default constructor
+
+			Order order(condition, orderType, location, previousOrder, nextOrder, unit);
+
+			Assert::IsNotNull(&order);
+		}
+
+		TEST_METHOD(CombatEvent_Construct_Success) {
+			MockCombatEvent ce(1, Location{ 40.111222, -70.717059 });
+
+			Assert::IsNotNull(&ce);
+		}
+
+		TEST_METHOD(MockCombatFrame_Construct_Success) {
+			MockCombatEvent ce(1, Location{ 40.111222, -70.717059 });
+			MockCombatFrame cf = MockCombatFrame();
+
+			Assert::IsNotNull(&cf);
+			cf.apply(ce);
+			Assert::IsTrue(cf.WAS_CALLED);
+		}
 	};
 }

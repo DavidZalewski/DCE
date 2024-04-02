@@ -145,6 +145,7 @@
     <ClInclude Include="leadership_morale.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="psychological_profile.h" />
+    <ClInclude Include="singleton_base.h" />
     <ClInclude Include="structs.h" />
     <ClInclude Include="weapon_skill.h" />
   </ItemGroup>
@@ -157,6 +158,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="structs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

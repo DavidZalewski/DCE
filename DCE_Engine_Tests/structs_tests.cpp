@@ -5,6 +5,7 @@
 #include "../DCE_Engine/psychological_profile.h"
 #include "../DCE_Engine/weapon_skill.h"
 #include "../DCE_Engine/leadership_morale.h"
+#include "../DCE_Engine/singleton_base.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -72,6 +73,169 @@ namespace DCEEngineTests
 			Assert::AreEqual(0.8f, morale.decisionMaking);
 			Assert::AreEqual(0.3f, morale.hesitation);
 			Assert::AreEqual(0.9f, morale.offense);
+		}
+
+		TEST_METHOD(NetworkSynchronization_Construct_Success) {
+			NetworkSynchronization sync(true, false, true, false);
+			Assert::IsTrue(sync.isPlayer);
+			Assert::IsFalse(sync.isLocal);
+			Assert::IsTrue(sync.isMultiplayer);
+			Assert::IsFalse(sync.isGlobal);
+		}
+
+		TEST_METHOD(AbstractBaseClassSingleton_Construct_Success) {
+			SingletonBase& singleton = SingletonBase::getInstance();
+			singleton.sharedProperty1 = 123;
+			singleton.sharedProperty2 = 346;
+
+			ChildClass1 child1;
+			ChildClass2 child2;
+
+			child1.modifySharedProperty1(10);
+			child2.modifySharedProperty2(20);
+
+			std::cout << "Shared Property 1: " << child1.getSharedProperty1() << std::endl;
+			std::cout << "Shared Property 2: " << child2.getSharedProperty2() << std::endl;
+
+			Assert::IsNotNull(&singleton);
+		}
+
+		TEST_METHOD(Unit_And_Relationship_Construct_Success) {
+			PsychologicalProfile profile(0.5f, 0.7f, 0.3f);
+			WeaponSkill skill(0.8f, 10.0f, 20.0f, 0.6f);
+			LeadershipMorale morale(-0.5f, 0.7f, 0.8f, 0.3f, 0.9f);
+			float latitude = 40.712784;
+			float longitude = -74.005941;
+			Location l = { latitude, longitude };
+
+			Unit u = { 1, Faction::BLUE, "Joe", "Ocazio", "Cortez", 33, profile, std::vector<Relationship>(), Rank::PLATOON_LEADER, 
+			skill, morale, CombatStatus::CALM, 0.5f, l, true, std::vector<Unit>(), std::map<Unit, float>(), 0.5f};
+
+			Assert::IsNotNull(&u);
+
+			Relationship r = { &u, RelationshipType::CLOSE, 0.8 };
+
+			Assert::IsNotNull(&r);
+		}
+
+		TEST_METHOD(Buddy_Construct_Success) {
+			PsychologicalProfile profile(0.5f, 0.7f, 0.3f);
+			WeaponSkill skill(0.8f, 10.0f, 20.0f, 0.6f);
+			LeadershipMorale morale(-0.5f, 0.7f, 0.8f, 0.3f, 0.9f);
+			Location l = { 40.712784, -74.005941 };
+
+			Unit u1 = { 1, Faction::BLUE, "Joe", "Ocazio", "Cortez", 33, profile, std::vector<Relationship>(), Rank::PLATOON_LEADER,
+			skill, morale, CombatStatus::CALM, 0.5f, l, true, std::vector<Unit>(), std::map<Unit, float>(), 0.5f };
+
+			Unit u2 = { 2, Faction::BLUE, "David", "M", "Hartmann", 33, profile, std::vector<Relationship>(), Rank::SQUAD_LEADER,
+			skill, morale, CombatStatus::CALM, 0.5f, l, true, std::vector<Unit>(), std::map<Unit, float>(), 0.5f };
+
+			Buddy b(Faction::BLUE, &u1, &u2, 0.6f);
+
+			Assert::IsNotNull(&b);
+		}
+
+		TEST_METHOD(FireTeam_Construct_Success) {
+			PsychologicalProfile profile(0.5f, 0.7f, 0.3f);
+			WeaponSkill skill(0.8f, 10.0f, 20.0f, 0.6f);
+			LeadershipMorale morale(-0.5f, 0.7f, 0.8f, 0.3f, 0.9f);
+			Location l = { 40.712784, -74.005941 };
+
+			Unit u1 = { 1, Faction::BLUE, "Joe", "Ocazio", "Cortez", 33, profile, std::vector<Relationship>(), Rank::SQUAD_LEADER,
+			skill, morale, CombatStatus::CALM, 0.5f, l, true, std::vector<Unit>(), std::map<Unit, float>(), 0.5f };
+
+			Unit u2 = { 2, Faction::BLUE, "David", "M", "Hartmann", 33, profile, std::vector<Relationship>(), Rank::ASSISTANT_AUTOMATIC_RIFLEMAN,
+			skill, morale, CombatStatus::CALM, 0.5f, l, true, std::vector<Unit>(), std::map<Unit, float>(), 0.5f };
+
+			Unit u3 = { 3, Faction::BLUE, "Blaine", "Roy", "Feltz", 33, profile, std::vector<Relationship>(), Rank::AUTOMATIC_RIFLEMAN,
+			skill, morale, CombatStatus::CALM, 0.5f, l, true, std::vector<Unit>(), std::map<Unit, float>(), 0.5f };
+
+			Unit u4 = { 4, Faction::BLUE, "Malarkey", "", "Toatrs", 33, profile, std::vector<Relationship>(), Rank::RIFLEMAN,
+			skill, morale, CombatStatus::CALM, 0.5f, l, true, std::vector<Unit>(), std::map<Unit, float>(), 0.5f };
+
+			Buddy b1(Faction::BLUE, &u1, &u2, 0.6f);
+			Buddy b2(Faction::BLUE, &u3, &u4, 0.5f);
+
+			FireTeam ft(&u1, &u1, &u3, &u2, &u4, b1, b2);
+
+			Assert::IsNotNull(&ft);
+		}
+
+		TEST_METHOD(Squad_Construct_Success) {
+			PsychologicalProfile profile(0.5f, 0.7f, 0.3f);
+			WeaponSkill skill(0.8f, 10.0f, 20.0f, 0.6f);
+			LeadershipMorale morale(-0.5f, 0.7f, 0.8f, 0.3f, 0.9f);
+			Location l = { 40.712784, -74.005941 };
+
+			Unit u1 = { 1, Faction::BLUE, "Joe", "Ocazio", "Cortez", 33, profile, std::vector<Relationship>(), Rank::SQUAD_LEADER,
+			skill, morale, CombatStatus::CALM, 0.5f, l, true, std::vector<Unit>(), std::map<Unit, float>(), 0.5f };
+
+			Unit u2 = { 2, Faction::BLUE, "David", "M", "Hartmann", 33, profile, std::vector<Relationship>(), Rank::ASSISTANT_AUTOMATIC_RIFLEMAN,
+			skill, morale, CombatStatus::CALM, 0.5f, l, true, std::vector<Unit>(), std::map<Unit, float>(), 0.5f };
+
+			Unit u3 = { 3, Faction::BLUE, "Blaine", "Roy", "Feltz", 33, profile, std::vector<Relationship>(), Rank::AUTOMATIC_RIFLEMAN,
+			skill, morale, CombatStatus::CALM, 0.5f, l, true, std::vector<Unit>(), std::map<Unit, float>(), 0.5f };
+
+			Unit u4 = { 4, Faction::BLUE, "Malarkey", "", "Toatrs", 33, profile, std::vector<Relationship>(), Rank::RIFLEMAN,
+			skill, morale, CombatStatus::CALM, 0.5f, l, true, std::vector<Unit>(), std::map<Unit, float>(), 0.5f };
+
+			Buddy b1(Faction::BLUE, &u1, &u2, 0.6f);
+			Buddy b2(Faction::BLUE, &u3, &u4, 0.5f);
+
+			FireTeam ft1(&u1, &u1, &u3, &u2, &u4, b1, b2);
+
+
+
+			Unit u5 = { 5, Faction::BLUE, "Joe", "Ocazio", "Cortez", 33, profile, std::vector<Relationship>(), Rank::FIRE_TEAM_LEADER,
+			skill, morale, CombatStatus::CALM, 0.5f, l, true, std::vector<Unit>(), std::map<Unit, float>(), 0.5f };
+
+			Unit u6 = { 6, Faction::BLUE, "David", "M", "Hartmann", 33, profile, std::vector<Relationship>(), Rank::ASSISTANT_AUTOMATIC_RIFLEMAN,
+			skill, morale, CombatStatus::CALM, 0.5f, l, true, std::vector<Unit>(), std::map<Unit, float>(), 0.5f };
+
+			Unit u7 = { 7, Faction::BLUE, "Blaine", "Roy", "Feltz", 33, profile, std::vector<Relationship>(), Rank::AUTOMATIC_RIFLEMAN,
+			skill, morale, CombatStatus::CALM, 0.5f, l, true, std::vector<Unit>(), std::map<Unit, float>(), 0.5f };
+
+			Unit u8 = { 8, Faction::BLUE, "Malarkey", "", "Toatrs", 33, profile, std::vector<Relationship>(), Rank::RIFLEMAN,
+			skill, morale, CombatStatus::CALM, 0.5f, l, true, std::vector<Unit>(), std::map<Unit, float>(), 0.5f };
+
+			Buddy b3(Faction::BLUE, &u1, &u2, 0.6f);
+			Buddy b4(Faction::BLUE, &u3, &u4, 0.5f);
+
+			FireTeam ft2(&u1, &u5, &u7, &u6, &u8, b3, b4);
+
+			// will use the fireteam declarations later
+
+			Squad squad(&u1);
+
+			Assert::IsNotNull(&squad);
+		}
+
+		TEST_METHOD(Platoon_Construct_Success) {
+			PsychologicalProfile profile(0.5f, 0.7f, 0.3f);
+			WeaponSkill skill(0.8f, 10.0f, 20.0f, 0.6f);
+			LeadershipMorale morale(-0.5f, 0.7f, 0.8f, 0.3f, 0.9f);
+			Location l = { 40.712784, -74.005941 };
+
+			Unit u1 = { 1, Faction::BLUE, "Joe", "Ocazio", "Cortez", 33, profile, std::vector<Relationship>(), Rank::PLATOON_LEADER,
+			skill, morale, CombatStatus::CALM, 0.5f, l, true, std::vector<Unit>(), std::map<Unit, float>(), 0.5f };
+
+			Platoon platoon(&u1);
+
+			Assert::IsNotNull(&platoon);
+		}
+
+		TEST_METHOD(Company_Construct_Success) {
+			PsychologicalProfile profile(0.5f, 0.7f, 0.3f);
+			WeaponSkill skill(0.8f, 10.0f, 20.0f, 0.6f);
+			LeadershipMorale morale(-0.5f, 0.7f, 0.8f, 0.3f, 0.9f);
+			Location l = { 40.712784, -74.005941 };
+
+			Unit u1 = { 1, Faction::BLUE, "Joe", "Ocazio", "Cortez", 33, profile, std::vector<Relationship>(), Rank::COMPANY_COMMANDER,
+			skill, morale, CombatStatus::CALM, 0.5f, l, true, std::vector<Unit>(), std::map<Unit, float>(), 0.5f };
+
+			Company company(&u1);
+
+			Assert::IsNotNull(&company);
 		}
 	};
 }

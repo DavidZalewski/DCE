@@ -70,6 +70,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\Users\david\OneDrive\Documents\DuckDB;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\david\OneDrive\Documents\DuckDB;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -145,6 +149,7 @@
     <ClInclude Include="leadership_morale.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="psychological_profile.h" />
+    <ClInclude Include="raw_data_structs.h" />
     <ClInclude Include="singleton_base.h" />
     <ClInclude Include="structs.h" />
     <ClInclude Include="weapon_skill.h" />
@@ -158,6 +163,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="raw_data_structs.cpp" />
     <ClCompile Include="structs.cpp" />
   </ItemGroup>
   <ItemGroup>

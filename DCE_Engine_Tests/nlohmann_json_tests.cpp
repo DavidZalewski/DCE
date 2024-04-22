@@ -7,7 +7,7 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace nlohmann_json_tests
+namespace EngineTests
 {
     struct Data {
         std::string name;

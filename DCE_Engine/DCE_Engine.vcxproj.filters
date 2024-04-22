@@ -39,6 +39,9 @@
     <ClInclude Include="singleton_base.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="raw_data_structs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -51,6 +54,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="structs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="raw_data_structs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

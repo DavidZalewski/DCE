@@ -4,7 +4,7 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace DCEEngineTests
+namespace EngineTests
 {
 	TEST_CLASS(DCEEngineTests)
 	{
